@@ -1,14 +1,10 @@
 [org 0x0100]
-jmp start
-multiplicand: dd 1300
-multiplier: dw 500
-result: dd 0
 
-start: mov cl,16
-      mov dx,[multiplier]
+mov cl,16
+mov dx,[multiplier]
 
 checkbit: shr dx,1
-          jnc skipbit
+jnc skipbit
           
 mov ax,[multiplicand]
 add [result],ax
@@ -22,3 +18,7 @@ jnz checkbit
 
 mov ax,0x4c00
 int 0x21
+
+multiplicand: dd 1300
+multiplier: dw 500
+result: dd 0
