@@ -1,45 +1,26 @@
 [org 0x0100]
-section .data
-    prompt db 'Enter 10 characters: $'
-    newline db 0xA  ; Newline character for formatting
- 
-section .bss
-    user_input resb 10  ; Buffer to store user input
- 
-section .text
-    global _start
- 
-_start:
-    ; Display prompt
-    mov ah, 9
-    mov dx, prompt
-    int 21h
- 
-    ; Take 10 characters input from the user
-    mov ecx, 10
-    mov edi, user_input
-input_loop:
-    mov ah, 1
-    int 21h
-    mov [edi], al
-    inc edi
-    loop input_loop
- 
-    ; Print characters in reverse order
-    mov ecx, 10
-    mov edi, user_input
-print_loop:
-    dec edi
-    mov al, [edi]
-    ; Check for newline character to determine the end of input
-    cmp al, newline
-    je end_program
-    ; Print the character
-    mov ah, 2
-    int 21h
-    loop print_loop
- 
-end_program:
-    ; Exit program
-    mov ah, 4Ch
-    int 21h
+
+rev:
+reverse:
+push bp
+mov bp, sp
+mov bx, 0
+l1:
+mov ax,[bp+4]
+pop ax
+add bx, 2
+cmp bx, 12
+jne l1
+pop bp
+ret 10
+start:
+mov cx, 10
+rev_loop:
+mov ah, 1
+int 21h
+mov dl, al
+push dx
+loop rev_loop
+call rev
+mov ah, 4ch
+int 21h
