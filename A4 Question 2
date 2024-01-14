@@ -1,0 +1,40 @@
+[org 0x0100]
+	jmp start	
+
+a2: dw 43, 23, 1, 12, 87, 15, 24, 89, 61, 81
+
+result: dw 0
+
+find:
+	
+	mov ax, [bx+si]
+	mov dx, [bx+si+2]
+	cmp ax,dx
+	ja swap
+	jmp continue
+
+swap:
+	mov dx, [bx+ si + 2]
+	mov [bx + si], dx
+	mov [bx + si + 2], ax
+
+continue:
+	add si, 2
+	sub cx, 1
+	cmp cx, 0
+	jnz find       
+	mov [result], ax
+	ret
+
+start:
+	mov si, 0
+	mov bx, a2
+	mov cx, 9
+	call find
+
+	mov dx, [result]
+	
+	mov ax, 0x4c00
+	int 0x21
+
+
